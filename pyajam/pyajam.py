@@ -78,7 +78,7 @@ class Pyajam:
             f = urllib2.urlopen(req)
             data = f.read()
             logging.debug(data)
-        except Exception, e:
+        except Exception as e:
             logging.error(e)
             if self.connexion_status == 'CONNECTED' and self.errback:
                 # We WERE connected, but not anymore, so if there is a errback, run it
@@ -100,7 +100,7 @@ class Pyajam:
             try:
                 f = urllib2.urlopen(req)
                 data = f.read()
-            except Exception, e:
+            except Exception as e:
                 if self.connexion_status == 'CONNECTED' and self.errback:
                     # We WERE connected, but not anymore, so if there is a errback, run it
                     self.errback()
@@ -637,8 +637,8 @@ class Pyajam:
             if callback:
                 try:
                     callback(data)
-                except Exception, e:
-                    print e
+                except Exception as e:
+                    print(e)
             else:
                 self._waitevt__run = False
                 return data
@@ -657,10 +657,10 @@ if __name__ == '__main__':
 
     ajam = Pyajam()
     if not ajam.login():
-        print "Invalid login"
+        print("Invalid login")
         sys.exit(1)
 
-    print 'asterisk version=', ajam.version()
+    print('asterisk version={}'.format(ajam.version()))
     # Get SIP peers list
     pp.pprint(ajam.sippeers())
     # Get IAX2 peers list
@@ -687,7 +687,7 @@ if __name__ == '__main__':
 
     # Event handler
     def ajam_event_listener(data):
-        print "event data >>>"
+        print("event data >>>")
         pp.pprint(data)
 
     while True:
