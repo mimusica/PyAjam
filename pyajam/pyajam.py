@@ -572,14 +572,14 @@ class Pyajam:
             data = self._unify_raw(data, regex, normalizer, unifyin)
         return data
 
-    def waitevent(self, async=False, callback=None, errback=None, recoverback=None):
+    def waitevent(self, async_ev=False , callback=None, errback=None, recoverback=None):
         """Manage Asterisk events.
 
          Usage:
-           * if *async* is **False** and *callback* is **None**, return the first eventlist received (*blocking*),
-           * if *async* is **False** and *callback* is not **None**, execute the callback for
+           * if *async_ev* is **False** and *callback* is **None**, return the first eventlist received (*blocking*),
+           * if *async_ev* is **False** and *callback* is not **None**, execute the callback for
              each received eventlist (*blocking*, e.g waitevent() never returns until calling *waitevent_stop()*),
-           * if *async* is **True** (*callback* is required), execute the callback for each
+           * if *async_ev* is **True** (*callback* is required), execute the callback for each
              eventlist (*non-blocking*, e.g waitevent() returns immediatly)
 
          **Callback function**:
@@ -592,11 +592,11 @@ class Pyajam:
          >>> import pprint, re
          >>> from pyajam import Pyajam
          >>> ajam = Pyajam(username='mspencer', password='*rocks!')
-         >>> pprint ajam.waitevent(async=False)
+         >>> pprint ajam.waitevent(async_ev=False)
          >>>
          >>> def ajam_event_listener(evtlist):
          >>>   pp.pprint(evtlist)
-         >>> ajam.waitevent(async=False, callback=ajam_event_listener)
+         >>> ajam.waitevent(async_ev=False, callback=ajam_event_listener)
          [ { u'event': u'Reload',
              u'message': u'Reload Requested',
              u'privilege': u'system,all'},
@@ -611,9 +611,9 @@ class Pyajam:
         if recoverback:
             self.recoverback = recoverback
 
-        if async:
+        if async_ev:
             if not callback:
-                raise ValueError('callback argument is required when async is true')
+                raise ValueError('callback argument is required when async_ev is true')
 
             from Queue import Queue
             import thread
@@ -623,7 +623,7 @@ class Pyajam:
             return self._waitevent(callback)
 
     def _waitevent(self, callback):
-        """Event async manager.
+        """Event async_ev manager.
         """
         self._waitevt__run = True
         while self._waitevt__run:
@@ -644,7 +644,7 @@ class Pyajam:
                 return data
 
     def waitevent_stop(self):
-        """Stop event async manager.
+        """Stop event async_ev manager.
         """
         self._waitevt__run = False
 
