@@ -26,15 +26,9 @@ __date__    = "2011/09/08"
 import sys, re, logging, time
 # Only on python 2.5 & superior
 from xml.etree import ElementTree
-
 from urllib.parse import quote
-urllib2.quote = quote
-
 from urllib.request import urlopen
-urllib2.urlopen = urlopen
-
 from urllib.request import Request
-urllib2.Request = Request
 
 class Pyajam:
 
@@ -70,15 +64,15 @@ class Pyajam:
         """Query Asterisk AJAM service.
 
         """
-        qargs = '&'.join(map(lambda x: "%s=%s" % (x, urllib2.quote(args[x])), args))
+        qargs = '&'.join(map(lambda x: "%s=%s" % (x, quote(args[x])), args))
         if len(qargs) > 0:
             qargs = '&' + qargs
 
         logging.debug("GET %s/%s?action=%s%s" % (self.url, mode, action, qargs))
-        req = urllib2.Request("%s/%s?action=%s%s" % (self.url, mode, action, qargs))
+        req = Request("%s/%s?action=%s%s" % (self.url, mode, action, qargs))
         req.add_header('Cookie', "mansession_id=\"%s\"" % self._sessionid_)
         try:
-            f = urllib2.urlopen(req)
+            f = urlopen(req)
             data = f.read()
             logging.debug(data)
         except Exception as e:
@@ -101,7 +95,7 @@ class Pyajam:
 
             req.add_header('Cookie', "mansession_id=\"%s\"" % self._sessionid_)
             try:
-                f = urllib2.urlopen(req)
+                f = urlopen(req)
                 data = f.read()
             except Exception as e:
                 if self.connexion_status == 'CONNECTED' and self.errback:
