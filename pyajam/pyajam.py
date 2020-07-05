@@ -23,15 +23,18 @@ __status__  = "developpement"
 __version__ = "0.2"
 __date__    = "2011/09/08"
 
-import sys, urllib2, re, logging, time
+import sys, re, logging, time
 # Only on python 2.5 & superior
 from xml.etree import ElementTree
 
-# only on python 2.5 & superior
-if not hasattr(urllib2, 'quote'):
-    import urllib
-    urllib2.quote = urllib.quote
+from urllib.parse import quote
+urllib2.quote = quote
 
+from urllib.request import urlopen
+urllib2.urlopen = urlopen
+
+from urllib.request import Request
+urllib2.Request = Request
 
 class Pyajam:
 
